@@ -7,7 +7,7 @@ title: 创建钱包、转账、查询余额
 
 #### 参考资料（一切以最新的sdk更新文件为准）：
 #### https://sdk.docs.etdchain.net/docs/python/intro
-#### https://sdk.docs.etdchain.net/do
+#### https://sdk.docs.etdchain.net/docs/python/tutorial/sign
 
 ## 测试ETD盒子是否正常运行
 
@@ -18,6 +18,7 @@ from etherdata_sdk.json_rpc import JsonRpcMethods
 client = JsonRpcMethods("http://192.168.51.100:8547")
 print(client.block_number())
 ```
+
 
 
 ## 创建账户
@@ -36,6 +37,36 @@ account.save(output_file="./private.key")
 
 ```
 
+## 挖矿
+```python
+from etherdata_sdk.account import Account
+from etherdata_sdk.json_rpc.miner import Miner
+
+account = Account()
+# 读取key
+account.read_private_key_from_file("private.key")
+
+from_account = account
+
+# 挖矿获取初始货币
+miner = Miner(url="http://192.168.51.100:8547")
+miner.set_etherbase(from_account.address)
+miner.start()
+#miner.stop()
+```
+
+## 查看自己的地址
+
+```python
+from etherdata_sdk.account import Account
+
+account = Account()
+# 读取key
+account.read_private_key_from_file("private.key")
+
+print(account.address)
+
+```
  
 ## 交易
 
@@ -47,10 +78,9 @@ account = Account()
 # 读取key
 account.read_private_key_from_file("private.key")
 
-
 from_account = account
-to_account = Account().create_random_private_key()
 
+#记得修改地址
 transaction = Transaction(to=to_account.address, value=30000, gas=1000, gas_price=300, nonce=1, chain_id=3101)
 
 signed = from_account.sign_transaction(transaction)
@@ -65,7 +95,7 @@ from etherdata_sdk.json_rpc import JsonRpcMethods
 
 account = Account()
 # 读取key
-account.read_private_key_from_file("private1.key")
+account.read_private_key_from_file("private.key")
 
 from_account = account
 
