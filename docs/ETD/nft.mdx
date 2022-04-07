@@ -1,0 +1,35 @@
+---
+sidebar_position: 6
+title: 上载NFT
+---
+
+上载NFT文件
+#### 参考资料（一切以最新的sdk更新文件为准）：
+#### https://sdk.docs.etdchain.net/docs/python/tutorial/file
+
+
+## 制作NFT
+登录网站制作NFT
+#### https://etdtest-lkf19wg6f-xxiangaa.vercel.app/
+
+
+
+## 上传NFT
+
+```python
+import os
+from etherdata_sdk.file import File, FileObject
+
+os.environ["url"] = "http://39.98.50.209:5145"
+file = File(url=os.getenv("url"))
+file_object = FileObject(file_path="/Users/maxine/PycharmProjects/pythonProject2/MyNFT.png", days=2)
+file_id = file.upload_file(file_object, error_on_exists=False)
+print(file_id)
+
+```
+
+## 下载NFT
+```python
+file.download_file(file_id, download_path="./test.png")
+```
+

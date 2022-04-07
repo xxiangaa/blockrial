@@ -71,8 +71,9 @@ print(account.address)
 ## 交易
 
 ```python
-from etherdata_sdk import Transaction
 from etherdata_sdk.account import Account
+from etherdata_sdk import Transaction
+from etherdata_sdk.json_rpc import JsonRpcMethods
 
 account = Account()
 # 读取key
@@ -80,11 +81,16 @@ account.read_private_key_from_file("private.key")
 
 from_account = account
 
-#记得修改地址
-transaction = Transaction(to=to_account.address, value=30000, gas=1000, gas_price=300, nonce=1, chain_id=3101)
+to_account = Account().create_random_private_key()
+
+transaction = Transaction(to=to_account.address, value=3000000000, gas=1000000,
+                          gas_price=3000000, nonce=12, chain_id=8348)
 
 signed = from_account.sign_transaction(transaction)
 
+client = JsonRpcMethods("http://192.168.51.100:8547")
+
+client.send_raw_transaction(signed.raw_transaction)
 ```
 
 ## 查询余额
